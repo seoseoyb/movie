@@ -1,16 +1,18 @@
 import streamlit as st
 from openai import OpenAI
 
+# =========================================================
+# 1. 페이지 기본 설정
+# =========================================================
 st.set_page_config(
     page_title="냥냥 고양이 추천소",
     page_icon="🐱",
     layout="wide"
 )
 
-# ==========================================
-# 고양이 사진
-# ==========================================
-
+# =========================================================
+# 2. 고양이 사진
+# =========================================================
 CAT_IMAGES = {
     "랙돌": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ragdoll%20cat.jpg",
     "메인쿤": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Maine_Coon_cat.jpg",
@@ -29,107 +31,86 @@ CAT_INFO = {
     "러시안 블루": "조용하고 신중하며 보호자와 친밀해지는 편"
 }
 
-# ==========================================
-# 화면 디자인
-# ==========================================
-
+# =========================================================
+# 3. 전체 디자인
+# =========================================================
 st.markdown("""
 <style>
 
 .stApp {
-    background: linear-gradient(
-        135deg,
-        #fff7fb 0%,
-        #f5f0ff 50%,
-        #fffaf0 100%
-    );
+    background:
+        linear-gradient(
+            135deg,
+            #fff7fb 0%,
+            #f5f0ff 50%,
+            #fffaf0 100%
+        );
 }
 
-/* 날아다니는 고양이 */
-.cat {
+/* 전체 여백 */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+}
+
+/* =========================
+   날아다니는 고양이
+   ========================= */
+
+.flying-cat {
     position: fixed;
-    left: -100px;
+    font-size: 38px;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.75;
+    animation: fly 13s linear infinite;
+    opacity: 0.8;
 }
 
 .cat1 {
     top: 12%;
-    font-size: 45px;
-    animation: fly1 14s linear infinite;
+    left: -80px;
+    animation-delay: 0s;
 }
 
 .cat2 {
     top: 30%;
-    font-size: 35px;
-    animation: fly2 18s linear infinite;
-    animation-delay: 3s;
+    left: -100px;
+    animation-delay: 4s;
+    font-size: 30px;
 }
 
 .cat3 {
     top: 55%;
-    font-size: 50px;
-    animation: fly3 16s linear infinite;
-    animation-delay: 6s;
+    left: -100px;
+    animation-delay: 8s;
+    font-size: 45px;
 }
 
 .cat4 {
     top: 75%;
-    font-size: 32px;
-    animation: fly4 20s linear infinite;
-    animation-delay: 1s;
+    left: -100px;
+    animation-delay: 2s;
+    font-size: 28px;
 }
 
-@keyframes fly1 {
+@keyframes fly {
     0% {
-        transform: translateX(0) translateY(0) rotate(-10deg);
+        transform: translateX(-100px) rotate(-8deg);
     }
+
     50% {
-        transform: translateX(55vw) translateY(-40px) rotate(10deg);
+        transform: translateX(55vw) translateY(-35px) rotate(8deg);
     }
+
     100% {
-        transform: translateX(110vw) translateY(20px) rotate(-5deg);
+        transform: translateX(110vw) translateY(10px) rotate(-5deg);
     }
 }
 
-@keyframes fly2 {
-    0% {
-        transform: translateX(0) translateY(20px) rotate(5deg);
-    }
-    50% {
-        transform: translateX(50vw) translateY(-50px) rotate(-8deg);
-    }
-    100% {
-        transform: translateX(110vw) translateY(10px) rotate(8deg);
-    }
-}
+/* =========================
+   제목
+   ========================= */
 
-@keyframes fly3 {
-    0% {
-        transform: translateX(0) translateY(0) rotate(8deg);
-    }
-    50% {
-        transform: translateX(60vw) translateY(-60px) rotate(-8deg);
-    }
-    100% {
-        transform: translateX(110vw) translateY(20px) rotate(5deg);
-    }
-}
-
-@keyframes fly4 {
-    0% {
-        transform: translateX(0) translateY(-20px);
-    }
-    50% {
-        transform: translateX(55vw) translateY(40px);
-    }
-    100% {
-        transform: translateX(110vw) translateY(-10px);
-    }
-}
-
-/* 큰 동글동글한 제목 */
 .main-title {
     text-align: center;
     font-family:
@@ -137,131 +118,167 @@ st.markdown("""
         "Trebuchet MS",
         "Malgun Gothic",
         sans-serif;
+
     font-size: 56px;
     font-weight: 900;
     letter-spacing: -3px;
     color: #604b73;
-    margin-top: 15px;
+
+    margin-top: 10px;
     margin-bottom: 8px;
 }
 
-.main-subtitle {
+.sub-title {
     text-align: center;
-    font-family: "Malgun Gothic", sans-serif;
     font-size: 18px;
-    font-weight: 500;
     color: #887593;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
 }
 
-/* 선택 영역 */
+/* =========================
+   선택 박스
+   ========================= */
+
+.choice-box {
+    background: rgba(255, 255, 255, 0.78);
+    border-radius: 25px;
+    padding: 25px 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 25px rgba(100, 70, 120, 0.08);
+}
+
 .choice-title {
     font-family:
         "Arial Rounded MT Bold",
         "Trebuchet MS",
         "Malgun Gothic",
         sans-serif;
+
     font-size: 25px;
-    font-weight: 900;
+    font-weight: 800;
     color: #604b73;
-    margin-top: 15px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
-/* 채팅 카드 */
-[data-testid="stChatMessage"] {
-    background: rgba(255, 255, 255, 0.90);
+/* =========================
+   채팅 카드
+   ========================= */
+
+.chat-card {
+    background: rgba(255, 255, 255, 0.82);
     border-radius: 22px;
-    padding: 10px;
-    margin-bottom: 12px;
-    box-shadow: 0 6px 20px rgba(100, 80, 120, 0.08);
+    padding: 18px 22px;
+    margin: 12px 0;
+    box-shadow: 0 5px 18px rgba(90, 70, 100, 0.08);
 }
 
-/* 입력창 */
-[data-testid="stChatInput"] {
+.user-card {
+    border-left: 5px solid #c9a7e8;
+}
+
+.ai-card {
+    border-left: 5px solid #f0b6d5;
+}
+
+/* =========================
+   추천 고양이 카드
+   ========================= */
+
+.cat-result {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 25px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 8px 25px rgba(90, 70, 100, 0.10);
+}
+
+.cat-result img {
     border-radius: 20px;
 }
 
-/* 전체 내용 */
-[data-testid="stAppViewContainer"] {
-    background: transparent;
-    position: relative;
-    z-index: 1;
-}
-
-header {
-    background: transparent !important;
-}
-
-/* 추천 제목 */
-.recommend-title {
+.cat-name {
     font-family:
         "Arial Rounded MT Bold",
         "Trebuchet MS",
         "Malgun Gothic",
         sans-serif;
-    font-size: 27px;
-    font-weight: 900;
+
     color: #604b73;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+/* 버튼 */
+.stButton > button {
+    border-radius: 18px;
+    border: none;
+    padding: 12px 25px;
+    font-size: 17px;
+    font-weight: 700;
+    background: #e8d4f5;
+    color: #604b73;
+}
+
+.stButton > button:hover {
+    background: #dcc1ee;
+}
+
+/* multiselect */
+div[data-baseweb="select"] > div {
+    border-radius: 16px !important;
+    background-color: rgba(255,255,255,0.9) !important;
+}
+
+/* 채팅 입력창 */
+div[data-testid="stChatInput"] {
+    border-radius: 20px;
 }
 
 </style>
+
+<!-- 날아다니는 고양이 -->
+<div class="flying-cat cat1">🐱</div>
+<div class="flying-cat cat2">🐈</div>
+<div class="flying-cat cat3">😺</div>
+<div class="flying-cat cat4">🐾</div>
 """, unsafe_allow_html=True)
 
-# ==========================================
-# 날아다니는 고양이
-# ==========================================
-
-st.markdown("""
-<div class="cat cat1">🐈</div>
-<div class="cat cat2">🐱</div>
-<div class="cat cat3">🐈‍⬛</div>
-<div class="cat cat4">😺</div>
-""", unsafe_allow_html=True)
-
-# ==========================================
-# 제목
-# ==========================================
-
+# =========================================================
+# 4. 제목
+# =========================================================
 st.markdown(
     '<div class="main-title">🐱 냥냥 고양이 추천소 🐱</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="main-subtitle">'
-    '나의 성격과 원하는 고양이 스타일을 알려주면 '
-    '나에게 어울리는 고양이를 찾아줄게냥'
-    '</div>',
+    '<div class="sub-title">내 성격과 원하는 고양이를 골라주면 딱 맞는 냥이를 찾아줄게냥!</div>',
     unsafe_allow_html=True
 )
 
-# ==========================================
-# Gemini
-# ==========================================
+# =========================================================
+# 5. Gemini 설정
+# =========================================================
+client = OpenAI(
+    api_key=st.secrets["GEMINI_API_KEY"],
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+)
 
-try:
-    client = OpenAI(
-        api_key=st.secrets["GEMINI_API_KEY"],
-        base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-    )
-except Exception:
-    client = None
+MODEL_NAME = "gemini-3.5-flash-lite"
 
-# ==========================================
-# AI 역할
-# ==========================================
-
+# =========================================================
+# 6. AI에게 전달할 시스템 프롬프트
+# =========================================================
 SYSTEM_PROMPT = """
 너는 '냥냥 고양이 추천소'라는 고양이 품종 추천 AI다.
 
-사용자가 처음 선택한 성격과 원하는 고양이 특징을 바탕으로
+사용자가 처음 선택한 자신의 성격과 원하는 고양이 특징을 바탕으로
 추가 질문을 하지 말고 바로 고양이를 추천한다.
 
+사용자가 선택한 조건을 모두 기억한다.
+
 처음 추천 이후에는 사용자가 새로운 조건을 말할 수 있다.
-새로운 조건이 들어오면 이전 조건을 기억하고 새 조건까지 합쳐서
+새로운 조건이 들어오면 이전 조건과 새로운 조건을 모두 합쳐서
 추천 후보를 좁히거나 새로운 품종을 추천한다.
 
 예:
@@ -274,140 +291,165 @@ SYSTEM_PROMPT = """
 사용자: 아파트에서 키울 거야
 → 기존 조건 + 생활환경까지 고려
 
-품종의 성격을 절대적으로 단정하지 않는다.
-같은 품종이어도 개체마다 성격이 다를 수 있음을 알려준다.
+중요:
+- 사용자가 처음 선택한 조건만으로도 바로 추천한다.
+- 처음부터 추가 질문을 여러 개 하지 않는다.
+- 사용자가 새로운 조건을 말하면 이전 조건을 초기화하지 않는다.
+- 이전 조건과 새로운 조건을 누적해서 생각한다.
+- 필요하다면 2~3개의 품종을 비교해서 추천한다.
+- 특정 품종의 성격을 절대적으로 단정하지 않는다.
+- 같은 품종이어도 개체마다 성격이 다를 수 있음을 알려준다.
+- 품종의 일반적인 경향과 실제 개체의 차이를 구분한다.
 
-추천할 때는:
+추천할 때는 다음 내용을 적절히 포함한다.
+
 🐱 가장 잘 어울리는 고양이
 💗 왜 잘 맞을까?
 ✨ 특징
 ⚠️ 알아둘 점
 🐾 다른 후보
 
-를 적절히 사용한다.
-
 한국어로만 답한다.
 친근하고 귀엽게 말한다.
 답변의 마지막 글자는 반드시 '냥'으로 끝낸다.
 """
 
-# ==========================================
-# 대화 기록
-# ==========================================
-
+# =========================================================
+# 7. 대화 기록 저장
+# =========================================================
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# ==========================================
-# 처음 방문했을 때 선택 화면
-# ==========================================
-
+# =========================================================
+# 8. 처음 방문했을 때 선택 화면
+# =========================================================
 if len(st.session_state.messages) == 0:
 
+    # -------------------------
+    # 성격 선택
+    # -------------------------
     st.markdown(
-        '<div class="choice-title">🐾 나는 이런 성격이야</div>',
+        '<div class="choice-box">',
         unsafe_allow_html=True
     )
 
-    personality = st.multiselect(
-        "나와 가까운 것을 골라줘!",
-        [
-            "🏠 조용하고 차분한 편",
-            "🎉 활발하고 노는 걸 좋아해",
-            "💕 애교 많고 정이 많은 편",
-            "🧘 혼자 있는 시간도 좋아해",
-            "👀 호기심이 많아",
-            "😌 느긋하고 여유로운 편"
-        ],
-        placeholder="여러 개 골라도 돼냥!"
-    )
-
     st.markdown(
-        '<div class="choice-title">🐱 이런 고양이를 찾고 있어</div>',
+        '<div class="choice-title">💭 나는 이런 성격이야</div>',
         unsafe_allow_html=True
     )
 
-    cat_style = st.multiselect(
+    personality_options = [
+        "🏠 조용하고 차분한 편",
+        "🎉 활발하고 노는 걸 좋아해",
+        "💕 애교 많고 정이 많은 편",
+        "🧘 혼자 있는 시간도 좋아해",
+        "👀 호기심이 많아",
+        "😌 느긋하고 여유로운 편"
+    ]
+
+    selected_personality = st.multiselect(
+        "나에게 해당하는 것을 골라줘!",
+        personality_options,
+        placeholder="성격을 선택해줘냥 🐾",
+        label_visibility="collapsed"
+    )
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # -------------------------
+    # 원하는 고양이 특징
+    # -------------------------
+    st.markdown(
+        '<div class="choice-box">',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<div class="choice-title">🐾 이런 고양이를 원해</div>',
+        unsafe_allow_html=True
+    )
+
+    cat_preference_options = [
+        "💕 사람을 잘 따르는 고양이",
+        "🥰 애교가 많은 고양이",
+        "⚡ 활발하고 장난기 많은 고양이",
+        "🌙 차분하고 조용한 고양이",
+        "🐾 독립적인 고양이",
+        "✨ 털이 복슬복슬한 고양이",
+        "🧹 털 관리가 쉬운 고양이",
+        "🏡 집에서 편안하게 지내는 고양이",
+        "🗣️ 사람과 상호작용을 좋아하는 고양이"
+    ]
+
+    selected_preferences = st.multiselect(
         "원하는 특징을 골라줘!",
-        [
-            "💕 사람을 잘 따르는 고양이",
-            "🥰 애교가 많은 고양이",
-            "⚡ 활발하고 장난기 많은 고양이",
-            "🌙 차분하고 조용한 고양이",
-            "🐾 독립적인 고양이",
-            "✨ 털이 복슬복슬한 고양이",
-            "🧹 털 관리가 쉬운 고양이",
-            "🏡 집에서 편안하게 지내는 고양이",
-            "🗣️ 사람과 상호작용을 좋아하는 고양이"
-        ],
-        placeholder="여러 개 골라도 돼냥!"
+        cat_preference_options,
+        placeholder="원하는 고양이 특징을 선택해줘냥 🐱",
+        label_visibility="collapsed"
     )
 
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # -------------------------
+    # 추천 버튼
+    # -------------------------
     if st.button(
         "🐱 이 조건으로 고양이 찾아줘냥!",
-        use_container_width=True,
-        type="primary"
+        use_container_width=True
     ):
 
-        if not personality and not cat_style:
-            st.warning(
-                "성격이나 원하는 고양이 특징을 하나 이상 골라줘냥!"
-            )
-
-        elif client is None:
-            st.error(
-                "잠시 문제가 생겼어요. 설정을 확인해 주세요냥"
-            )
+        if not selected_personality and not selected_preferences:
+            st.warning("성격이나 원하는 고양이 특징을 하나 이상 골라줘냥! 🐾")
 
         else:
 
-            selected = f"""
-[처음 선택한 조건]
+            personality_text = (
+                ", ".join(selected_personality)
+                if selected_personality
+                else "특별히 선택하지 않음"
+            )
 
-사용자의 성격:
-{", ".join(personality) if personality else "선택하지 않음"}
+            preference_text = (
+                ", ".join(selected_preferences)
+                if selected_preferences
+                else "특별히 선택하지 않음"
+            )
 
-원하는 고양이:
-{", ".join(cat_style) if cat_style else "선택하지 않음"}
+            user_message = f"""
+내 성격:
+{personality_text}
+
+내가 원하는 고양이 특징:
+{preference_text}
+
+이 조건에 맞는 고양이를 바로 추천해줘.
 """
 
+            # 대화 기록에 저장
             st.session_state.messages.append({
                 "role": "user",
-                "content": selected
+                "content": user_message
             })
 
-            api_messages = [
-                {
-                    "role": "system",
-                    "content": SYSTEM_PROMPT
-                }
-            ]
-
-            api_messages.extend(st.session_state.messages)
-
+            # AI에게 요청
             try:
 
                 response = client.chat.completions.create(
-                    model="gemini-3.5-flash-lite",
-                    messages=api_messages,
-                    stream=True
+                    model=MODEL_NAME,
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": SYSTEM_PROMPT
+                        },
+                        *st.session_state.messages
+                    ]
                 )
 
-                answer = ""
+                answer = response.choices[0].message.content
 
-                for chunk in response:
-
-                    if chunk.choices:
-
-                        delta = chunk.choices[0].delta.content
-
-                        if delta:
-                            answer += delta
-
-                answer = answer.rstrip()
-
-                if answer and not answer.endswith("냥"):
-                    answer += "냥"
+                # 마지막이 냥으로 끝나지 않는 경우 보정
+                if not answer.endswith("냥"):
+                    answer = answer.rstrip() + "냥"
 
                 st.session_state.messages.append({
                     "role": "assistant",
@@ -417,143 +459,187 @@ if len(st.session_state.messages) == 0:
                 st.rerun()
 
             except Exception:
+                # 사용자에게 복잡한 오류 메시지를 보여주지 않음
+                st.error(
+                    "앗, 냥냥 추천소가 잠깐 졸고 있어냥 😿 잠시 후 다시 눌러줘냥!"
+                )
 
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content":
-                    "잠시 문제가 생겼어요. 다시 시도해 주세요냥"
-                })
-
-                st.rerun()
-
-# ==========================================
-# 기존 대화 표시
-# ==========================================
-
+# =========================================================
+# 9. 기존 대화 출력
+# =========================================================
 for message in st.session_state.messages:
 
-    with st.chat_message(message["role"]):
+    if message["role"] == "user":
 
-        st.markdown(message["content"])
+        st.markdown(
+            f"""
+            <div class="chat-card user-card">
+                <b>🙋 나</b><br><br>
+                {message["content"].replace(chr(10), "<br>")}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-        # AI 답변에 나온 고양이 사진 표시
+    elif message["role"] == "assistant":
+
+        st.markdown(
+            f"""
+            <div class="chat-card ai-card">
+                <b>🐱 냥냥 AI</b><br><br>
+                {message["content"].replace(chr(10), "<br>")}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+# =========================================================
+# 10. 추천 고양이 사진
+# =========================================================
+# AI 답변에 등장한 품종 이름을 찾아서 사진을 보여줌
+if len(st.session_state.messages) > 0:
+
+    latest_answer = ""
+
+    for message in reversed(st.session_state.messages):
         if message["role"] == "assistant":
+            latest_answer = message["content"]
+            break
 
-            found = []
+    recommended_cats = []
 
-            for breed in CAT_IMAGES:
+    for cat_name in CAT_IMAGES:
 
-                if breed in message["content"]:
+        if cat_name in latest_answer:
+            recommended_cats.append(cat_name)
 
-                    if breed not in found:
-                        found.append(breed)
+    # 최대 3마리까지만 사진 표시
+    recommended_cats = recommended_cats[:3]
 
-            found = found[:3]
+    if recommended_cats:
 
-            if found:
+        st.markdown(
+            "### 🐾 냥냥이가 추천한 고양이",
+            unsafe_allow_html=True
+        )
+
+        columns = st.columns(len(recommended_cats))
+
+        for column, cat_name in zip(columns, recommended_cats):
+
+            with column:
 
                 st.markdown(
-                    '<div class="recommend-title">'
-                    '🐾 추천 고양이'
+                    '<div class="cat-result">',
+                    unsafe_allow_html=True
+                )
+
+                st.image(
+                    CAT_IMAGES[cat_name],
+                    use_container_width=True
+                )
+
+                st.markdown(
+                    f'<div class="cat-name">🐱 {cat_name}</div>',
+                    unsafe_allow_html=True
+                )
+
+                st.write(CAT_INFO[cat_name])
+
+                st.markdown(
                     '</div>',
                     unsafe_allow_html=True
                 )
 
-                columns = st.columns(len(found))
 
-                for column, breed in zip(columns, found):
+# =========================================================
+# 11. 추천 이후 추가 대화
+# =========================================================
+if len(st.session_state.messages) > 0:
 
-                    with column:
-
-                        st.image(
-                            CAT_IMAGES[breed],
-                            use_container_width=True
-                        )
-
-                        st.markdown(
-                            f"### 🐱 {breed}"
-                        )
-
-                        st.write(
-                            CAT_INFO[breed]
-                        )
-
-# ==========================================
-# 추가 대화
-# ==========================================
-
-if st.session_state.messages:
+    st.markdown(
+        """
+        <div style="
+            text-align:center;
+            color:#887593;
+            margin-top:25px;
+            margin-bottom:10px;
+            font-size:16px;
+        ">
+        💬 더 구체적인 조건을 말해주면 추천을 다시 좁혀줄게냥!
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     user_input = st.chat_input(
-        "더 구체적인 조건을 말해줘! 🐱"
+        "예: 털이 많이 빠지는 건 싫어냥 🐾"
     )
 
     if user_input:
 
+        # 사용자 메시지 저장
         st.session_state.messages.append({
             "role": "user",
             "content": user_input
         })
 
-        if client is None:
+        try:
 
-            answer = "잠시 문제가 생겼어요. 설정을 확인해 주세요냥"
-
-        else:
-
-            api_messages = [
-                {
-                    "role": "system",
-                    "content": SYSTEM_PROMPT
-                }
-            ]
-
-            api_messages.extend(
-                st.session_state.messages
+            # 전체 대화를 다시 AI에게 전달
+            response = client.chat.completions.create(
+                model=MODEL_NAME,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": SYSTEM_PROMPT
+                    },
+                    *st.session_state.messages
+                ],
+                stream=True
             )
 
-            try:
+            # 스트리밍으로 답변 표시
+            full_answer = ""
 
-                response = client.chat.completions.create(
-                    model="gemini-3.5-flash-lite",
-                    messages=api_messages,
-                    stream=True
-                )
+            placeholder = st.empty()
 
-                answer = ""
+            for chunk in response:
 
-                with st.chat_message("assistant"):
+                if chunk.choices:
 
-                    placeholder = st.empty()
+                    delta = chunk.choices[0].delta.content
 
-                    for chunk in response:
+                    if delta:
+                        full_answer += delta
 
-                        if chunk.choices:
+                        placeholder.markdown(
+                            f"""
+                            <div class="chat-card ai-card">
+                                <b>🐱 냥냥 AI</b><br><br>
+                                {full_answer}
+                            </div>
+                            """,
+                            unsafe_allow_html=True
+                        )
 
-                            delta = chunk.choices[0].delta.content
+            # 마지막 글자를 냥으로 맞춤
+            full_answer = full_answer.rstrip()
 
-                            if delta:
+            if not full_answer.endswith("냥"):
+                full_answer += "냥"
 
-                                answer += delta
-                                placeholder.markdown(answer)
+            # 최종 답변 저장
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": full_answer
+            })
 
-                    answer = answer.rstrip()
+            st.rerun()
 
-                    if answer and not answer.endswith("냥"):
-                        answer += "냥"
+        except Exception:
 
-                    placeholder.markdown(answer)
-
-            except Exception:
-
-                answer = (
-                    "잠시 문제가 생겼어요. "
-                    "조금 후에 다시 시도해 주세요냥"
-                )
-
-        st.session_state.messages.append({
-            "role": "assistant",
-            "content": answer
-        })
-
-        st.rerun()
+            st.error(
+                "앗, 냥냥 추천소가 잠깐 졸고 있어냥 😿 잠시 후 다시 말해줘냥!"
+            )
