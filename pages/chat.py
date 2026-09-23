@@ -13,7 +13,7 @@ st.set_page_config(
 
 
 # ==========================================
-# 고양이 정보
+# 고양이 사진
 # ==========================================
 
 CAT_IMAGES = {
@@ -24,6 +24,11 @@ CAT_IMAGES = {
     "페르시안": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Persian_cat.jpg",
     "러시안 블루": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Russian_Blue.jpg",
 }
+
+
+# ==========================================
+# 고양이 특징
+# ==========================================
 
 CAT_INFO = {
     "랙돌": {
@@ -36,7 +41,7 @@ CAT_INFO = {
     },
     "샴": {
         "emoji": "💙",
-        "feature": "사람과의 상호작용을 좋아하고 활발한 편"
+        "feature": "사람과 상호작용을 좋아하고 활발한 편"
     },
     "브리티시 숏헤어": {
         "emoji": "🤍",
@@ -62,12 +67,13 @@ st.markdown("""
 
 /* 전체 배경 */
 .stApp {
-    background: linear-gradient(
-        135deg,
-        #fff7fb 0%,
-        #f7f1ff 50%,
-        #fffaf1 100%
-    );
+    background:
+        linear-gradient(
+            135deg,
+            #fff7fb 0%,
+            #f7f1ff 50%,
+            #fffaf1 100%
+        );
 }
 
 
@@ -80,7 +86,7 @@ st.markdown("""
     left: -100px;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.7;
+    opacity: 0.75;
 }
 
 .cat1 {
@@ -90,88 +96,132 @@ st.markdown("""
 }
 
 .cat2 {
-    top: 32%;
+    top: 30%;
     font-size: 35px;
     animation: fly2 18s linear infinite;
     animation-delay: 3s;
 }
 
 .cat3 {
-    top: 57%;
+    top: 55%;
     font-size: 50px;
     animation: fly3 16s linear infinite;
     animation-delay: 6s;
 }
 
 .cat4 {
-    top: 78%;
+    top: 75%;
     font-size: 32px;
     animation: fly4 20s linear infinite;
     animation-delay: 1s;
 }
 
+
+/* 고양이 움직임 */
+
 @keyframes fly1 {
+
     0% {
-        transform: translateX(0) translateY(0) rotate(-10deg);
+        transform:
+            translateX(0)
+            translateY(0)
+            rotate(-10deg);
     }
 
     50% {
-        transform: translateX(55vw) translateY(-40px) rotate(10deg);
+        transform:
+            translateX(55vw)
+            translateY(-40px)
+            rotate(10deg);
     }
 
     100% {
-        transform: translateX(110vw) translateY(20px) rotate(-5deg);
+        transform:
+            translateX(110vw)
+            translateY(20px)
+            rotate(-5deg);
     }
 }
+
 
 @keyframes fly2 {
+
     0% {
-        transform: translateX(0) translateY(20px) rotate(5deg);
+        transform:
+            translateX(0)
+            translateY(20px)
+            rotate(5deg);
     }
 
     50% {
-        transform: translateX(50vw) translateY(-50px) rotate(-8deg);
+        transform:
+            translateX(50vw)
+            translateY(-50px)
+            rotate(-8deg);
     }
 
     100% {
-        transform: translateX(110vw) translateY(10px) rotate(8deg);
+        transform:
+            translateX(110vw)
+            translateY(10px)
+            rotate(8deg);
     }
 }
+
 
 @keyframes fly3 {
+
     0% {
-        transform: translateX(0) translateY(0) rotate(8deg);
+        transform:
+            translateX(0)
+            translateY(0)
+            rotate(8deg);
     }
 
     50% {
-        transform: translateX(60vw) translateY(-60px) rotate(-8deg);
+        transform:
+            translateX(60vw)
+            translateY(-60px)
+            rotate(-8deg);
     }
 
     100% {
-        transform: translateX(110vw) translateY(20px) rotate(5deg);
+        transform:
+            translateX(110vw)
+            translateY(20px)
+            rotate(5deg);
     }
 }
 
+
 @keyframes fly4 {
+
     0% {
-        transform: translateX(0) translateY(-20px);
+        transform:
+            translateX(0)
+            translateY(-20px);
     }
 
     50% {
-        transform: translateX(55vw) translateY(40px);
+        transform:
+            translateX(55vw)
+            translateY(40px);
     }
 
     100% {
-        transform: translateX(110vw) translateY(-10px);
+        transform:
+            translateX(110vw)
+            translateY(-10px);
     }
 }
 
 
 /* ==========================================
-   제목
+   큰 동글동글한 제목
    ========================================== */
 
 .main-title {
+
     text-align: center;
 
     font-family:
@@ -181,6 +231,7 @@ st.markdown("""
         sans-serif;
 
     font-size: 56px;
+
     font-weight: 900;
 
     letter-spacing: -3px;
@@ -188,15 +239,21 @@ st.markdown("""
     color: #604b73;
 
     margin-top: 15px;
+
     margin-bottom: 8px;
 }
 
+
 .main-subtitle {
+
     text-align: center;
 
-    font-family: "Malgun Gothic", sans-serif;
+    font-family:
+        "Malgun Gothic",
+        sans-serif;
 
     font-size: 18px;
+
     font-weight: 500;
 
     color: #887593;
@@ -206,10 +263,29 @@ st.markdown("""
 
 
 /* ==========================================
-   선택 영역
+   처음 선택하는 영역
    ========================================== */
 
+.choice-box {
+
+    background:
+        rgba(255, 255, 255, 0.82);
+
+    border-radius: 25px;
+
+    padding: 20px 24px;
+
+    margin-top: 15px;
+
+    margin-bottom: 15px;
+
+    box-shadow:
+        0 6px 20px rgba(100, 80, 120, 0.08);
+}
+
+
 .choice-title {
+
     font-family:
         "Arial Rounded MT Bold",
         "Trebuchet MS",
@@ -217,21 +293,23 @@ st.markdown("""
         sans-serif;
 
     font-size: 25px;
+
     font-weight: 800;
 
     color: #604b73;
 
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 
 /* ==========================================
-   채팅창
+   채팅
    ========================================== */
 
 [data-testid="stChatMessage"] {
-    background: rgba(255, 255, 255, 0.90);
+
+    background:
+        rgba(255, 255, 255, 0.90);
 
     border-radius: 22px;
 
@@ -243,35 +321,54 @@ st.markdown("""
         0 6px 20px rgba(100, 80, 120, 0.08);
 }
 
+
+/* 입력창 */
+
 [data-testid="stChatInput"] {
+
     border-radius: 20px;
 }
 
 
-/* 앱 내용 */
+/* ==========================================
+   추천 카드
+   ========================================== */
+
+.recommend-title {
+
+    font-family:
+        "Arial Rounded MT Bold",
+        "Trebuchet MS",
+        "Malgun Gothic",
+        sans-serif;
+
+    font-size: 26px;
+
+    font-weight: 900;
+
+    color: #604b73;
+
+    margin-top: 25px;
+
+    margin-bottom: 10px;
+}
+
+
+/* Streamlit 기본 배경 투명 */
+
 [data-testid="stAppViewContainer"] {
+
     background: transparent;
+
     position: relative;
+
     z-index: 1;
 }
 
+
 header {
+
     background: transparent !important;
-}
-
-
-/* 추천 카드 */
-.recommend-card {
-    background: rgba(255, 255, 255, 0.9);
-
-    border-radius: 20px;
-
-    padding: 15px;
-
-    margin-top: 10px;
-
-    box-shadow:
-        0 5px 18px rgba(100, 80, 120, 0.08);
 }
 
 </style>
@@ -301,7 +398,7 @@ st.markdown(
 
 st.markdown(
     '<div class="main-subtitle">'
-    '내 성격과 원하는 고양이를 골라보면 '
+    '나의 성격과 원하는 고양이 스타일을 알려주면 '
     '나에게 어울리는 고양이를 찾아줄게냥'
     '</div>',
     unsafe_allow_html=True
@@ -313,66 +410,96 @@ st.markdown(
 # ==========================================
 
 try:
+
     client = OpenAI(
         api_key=st.secrets["GEMINI_API_KEY"],
         base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
     )
+
 except Exception:
+
     client = None
 
 
 # ==========================================
-# AI 역할
+# AI 시스템 프롬프트
 # ==========================================
 
 SYSTEM_PROMPT = """
-너는 '냥냥 고양이 추천소'라는 고양이 품종 추천 챗봇이다.
+너는 '냥냥 고양이 추천소'라는 고양이 품종 추천 AI다.
 
-사용자가 처음 선택한 성격과 원하는 고양이 특징을 바탕으로
-고양이 품종을 바로 추천한다.
+사용자의 성격과 원하는 고양이 특징을 바탕으로
+어울리는 고양이 품종을 추천한다.
 
-그 이후 사용자가 추가 조건이나 취향을 말하면
-기존 조건을 유지하면서 새 조건을 추가해 후보를 좁히거나
-필요하다면 새로운 품종을 추천한다.
+가장 중요한 규칙은 다음과 같다.
 
-중요한 규칙:
+[처음 추천할 때]
 
-1. 사용자가 충분한 정보를 선택했다면 추가 질문부터 하지 말고 바로 추천한다.
-2. 사용자가 처음 선택한 조건을 기억한다.
-3. 이후 대화에서 사용자가 새로운 조건을 말하면 기존 조건과 합쳐서 판단한다.
-4. 조건이 추가되면서 기존 추천이 맞지 않게 되면 새로운 후보를 제시한다.
-5. 고양이 품종의 성격은 개체마다 다를 수 있으므로 절대적으로 단정하지 않는다.
-6. 품종의 일반적인 경향을 설명한다.
-7. 추천할 때 왜 조건에 맞는지 설명한다.
-8. 장점뿐 아니라 고려할 점도 알려준다.
-9. 사용자가 원하는 경우 후보를 1~3개 정도로 좁혀준다.
-10. 한국어로 대답한다.
-11. 친근하고 귀엽게 대답한다.
-12. 답변의 마지막 글자는 반드시 '냥'으로 끝낸다.
+사용자가 선택한 조건이 충분하면
+추가 질문을 하지 말고 바로 추천한다.
 
-처음 추천할 때 형식:
+사용자의 선택을 바탕으로
+가장 잘 어울리는 품종 1개를 중심으로 추천하고,
+필요하면 다른 후보 1~2개도 알려준다.
+
+추천할 때는 반드시 다음 내용을 포함한다.
 
 🐱 가장 잘 어울리는 고양이
-품종: ○○
+품종 이름
 
 💗 왜 잘 맞을까?
-사용자가 선택한 조건과 연결해서 설명
+사용자가 선택한 성격과 원하는 특징을 연결해서 설명한다.
 
 ✨ 특징
-고양이의 대표적인 특징
+그 품종의 대표적인 특징을 설명한다.
 
 ⚠️ 알아둘 점
-키울 때 고려할 점
+털 관리, 활동량, 독립성 등 고려할 점을 설명한다.
 
-🐾 다른 후보
-필요한 경우 다른 품종 1~2개
+[추가 대화]
 
-추가 조건이 들어오면:
+사용자가 이후에 새로운 조건을 말하면
+처음 선택했던 조건을 잊지 않는다.
 
-🐾 조건을 반영해서 다시 골라봤어!
+예를 들어 사용자가
 
-이전 조건 + 새로운 조건을 반영하여
-후보를 좁히거나 새롭게 추천한다.
+"털이 많이 빠지는 건 싫어"
+
+라고 하면 기존 조건에 이 조건을 추가해서
+추천 후보를 다시 좁힌다.
+
+또
+
+"좀 더 애교가 많았으면 좋겠어"
+
+라고 하면 기존 조건 + 애교가 많은 특징을 반영한다.
+
+사용자가
+
+"아파트에서 키울 거야"
+
+라고 하면 생활환경까지 고려해서
+추천을 다시 조정한다.
+
+즉,
+처음부터 계속 질문하는 방식이 아니라
+
+사용자 선택
+→ 바로 추천
+→ 추가 대화
+→ 조건 추가
+→ 후보 좁히기 또는 재추천
+
+방식으로 대화한다.
+
+품종마다 개체 차이가 있으므로
+특정 품종의 성격을 절대적으로 단정하지 않는다.
+
+한국어로만 답한다.
+
+친근하고 귀엽게 말한다.
+
+답변의 마지막 글자는 반드시 '냥'으로 끝낸다.
 """
 
 
@@ -385,57 +512,89 @@ if "messages" not in st.session_state:
 
 
 # ==========================================
-# 초기 선택 화면
+# 첫 화면
 # ==========================================
 
 if len(st.session_state.messages) == 0:
 
+    # ------------------------------
+    # 성격 선택
+    # ------------------------------
+
     st.markdown(
-        '<div class="choice-title">🐾 나는 이런 성격이야</div>',
+        '<div class="choice-box">'
+        '<div class="choice-title">🐾 나는 이런 성격이야</div>'
+        '</div>',
         unsafe_allow_html=True
     )
 
     personality_options = [
+
         "🏠 조용하고 차분한 편",
+
         "🎉 활발하고 노는 걸 좋아해",
+
         "💕 애교 많고 정이 많은 편",
+
         "🧘 혼자 있는 시간도 좋아해",
-        "👀 새로운 걸 좋아하고 호기심이 많아",
+
+        "👀 호기심이 많고 새로운 걸 좋아해",
+
         "😌 느긋하고 여유로운 편",
+
     ]
 
     personality = st.multiselect(
-        "나를 가장 잘 나타내는 것을 골라줘!",
+        "나와 가까운 것을 골라줘!",
         personality_options,
-        placeholder="여러 개 골라도 돼냥!"
+        placeholder="여러 개 선택 가능해냥"
     )
 
 
+    # ------------------------------
+    # 원하는 고양이
+    # ------------------------------
+
     st.markdown(
-        '<div class="choice-title">🐱 이런 고양이를 찾고 있어</div>',
+        '<div class="choice-box">'
+        '<div class="choice-title">🐱 이런 고양이를 찾고 있어</div>'
+        '</div>',
         unsafe_allow_html=True
     )
 
     cat_options = [
+
         "💕 사람을 잘 따르는 고양이",
-        "⚡ 활발하고 장난기 많은 고양이",
-        "🌙 차분하고 조용한 고양이",
+
         "🥰 애교가 많은 고양이",
+
+        "⚡ 활발하고 장난기 많은 고양이",
+
+        "🌙 차분하고 조용한 고양이",
+
         "🐾 독립적인 고양이",
+
         "✨ 털이 복슬복슬한 고양이",
+
         "🧹 털 관리가 비교적 쉬운 고양이",
+
         "🏡 집에서 편안하게 지내는 고양이",
+
         "🗣️ 사람과 상호작용을 좋아하는 고양이",
+
     ]
 
     cat_style = st.multiselect(
         "원하는 특징을 골라줘!",
         cat_options,
-        placeholder="여러 개 골라도 돼냥!"
+        placeholder="여러 개 선택 가능해냥"
     )
 
 
+    # ------------------------------
     # 추천 버튼
+    # ------------------------------
+
     if st.button(
         "🐱 이 조건으로 고양이 찾아줘냥!",
         use_container_width=True,
@@ -456,27 +615,29 @@ if len(st.session_state.messages) == 0:
 
         else:
 
-            # 선택한 내용을 하나의 문장으로 만들기
             selected_text = f"""
-내 성격:
-{", ".join(personality)}
+[사용자가 처음 선택한 조건]
 
-내가 원하는 고양이:
-{", ".join(cat_style)}
+나의 성격:
+{", ".join(personality) if personality else "특별히 선택하지 않음"}
+
+원하는 고양이 특징:
+{", ".join(cat_style) if cat_style else "특별히 선택하지 않음"}
 """
 
-            # 사용자 메시지로 저장
+            # 사용자의 조건 저장
             st.session_state.messages.append({
                 "role": "user",
                 "content": selected_text
             })
 
-            # AI에게 보내기
             api_messages = [
+
                 {
                     "role": "system",
                     "content": SYSTEM_PROMPT
                 }
+
             ]
 
             api_messages.extend(
@@ -493,7 +654,9 @@ if len(st.session_state.messages) == 0:
 
                 answer = ""
 
-                with st.spinner("나에게 어울리는 고양이를 찾는 중이냥..."):
+                with st.spinner(
+                    "나에게 어울리는 고양이를 찾는 중이냥... 🐾"
+                ):
 
                     for chunk in response:
 
@@ -528,7 +691,7 @@ if len(st.session_state.messages) == 0:
 
 
 # ==========================================
-# 기존 대화 표시
+# 기존 대화 보여주기
 # ==========================================
 
 for message in st.session_state.messages:
@@ -537,7 +700,10 @@ for message in st.session_state.messages:
 
         st.markdown(message["content"])
 
+        # ------------------------------
         # AI 답변에서 품종 찾기
+        # ------------------------------
+
         if message["role"] == "assistant":
 
             found = []
@@ -545,14 +711,21 @@ for message in st.session_state.messages:
             for breed in CAT_IMAGES:
 
                 if breed in message["content"]:
+
                     if breed not in found:
                         found.append(breed)
 
+            # 최대 3개
             found = found[:3]
 
             if found:
 
-                st.markdown("### 🐾 추천 고양이")
+                st.markdown(
+                    '<div class="recommend-title">'
+                    '🐾 추천 고양이'
+                    '</div>',
+                    unsafe_allow_html=True
+                )
 
                 columns = st.columns(len(found))
 
@@ -583,7 +756,7 @@ for message in st.session_state.messages:
 if st.session_state.messages:
 
     user_input = st.chat_input(
-        "더 원하는 조건을 말해줘! 예: 털이 적게 빠졌으면 좋겠어 🐱"
+        "더 원하는 조건을 말해줘! 예: 털이 덜 빠졌으면 좋겠어 🐱"
     )
 
     if user_input:
@@ -607,13 +780,15 @@ if st.session_state.messages:
         else:
 
             api_messages = [
+
                 {
                     "role": "system",
                     "content": SYSTEM_PROMPT
                 }
+
             ]
 
-            # 지금까지의 모든 대화 전달
+            # 이전 대화 전체를 전달
             api_messages.extend(
                 st.session_state.messages
             )
