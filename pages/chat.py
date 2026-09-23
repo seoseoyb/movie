@@ -13,8 +13,7 @@ st.set_page_config(
 
 
 # ==================================================
-# 고양이 사진 주소
-# Wikimedia Commons의 공개 고양이 사진 사용
+# 고양이 품종 사진
 # ==================================================
 
 CAT_IMAGES = {
@@ -28,7 +27,7 @@ CAT_IMAGES = {
 
 
 # ==================================================
-# 고양이 특징
+# 품종별 특징
 # ==================================================
 
 CAT_INFO = {
@@ -36,12 +35,12 @@ CAT_INFO = {
     "랙돌": {
         "emoji": "🤍",
         "feature": "차분하고 사람과 교감하는 것을 좋아하는 편으로 알려진 장모종이야.",
-        "keyword": "차분함 · 애교 · 긴 털 · 사람과의 교감"
+        "keyword": "차분함 · 애교 · 긴 털 · 교감"
     },
 
     "메인쿤": {
         "emoji": "🩶",
-        "feature": "몸집이 크고 털이 풍성하며 비교적 친근하고 사교적인 성향으로 알려져 있어.",
+        "feature": "몸집이 크고 털이 풍성하며 친근하고 사교적인 성향으로 알려져 있어.",
         "keyword": "대형묘 · 풍성한 털 · 사교적 · 장난기"
     },
 
@@ -54,7 +53,7 @@ CAT_INFO = {
     "브리티시 숏헤어": {
         "emoji": "🩵",
         "feature": "차분하고 독립적인 성향을 보이는 경우가 많으며 짧고 빽빽한 털이 특징이야.",
-        "keyword": "차분함 · 독립적 · 짧은 털 · 동글동글한 외모"
+        "keyword": "차분함 · 독립적 · 짧은 털 · 동글동글"
     },
 
     "페르시안": {
@@ -72,166 +71,274 @@ CAT_INFO = {
 
 
 # ==================================================
-# 배경 디자인
+# ★ 전체 화면 고양이 배경
 # ==================================================
 
 st.markdown("""
 <style>
 
+/* ----------------------------------------------
+   전체 웹페이지 배경
+   ---------------------------------------------- */
+
 .stApp {
-    background:
-        linear-gradient(
-            135deg,
-            #fff7fb 0%,
-            #f5f1ff 50%,
-            #eef9ff 100%
+    min-height: 100vh;
+
+    background-color: #fff7fb;
+
+    background-image:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(255,255,255,0.9) 0px,
+            rgba(255,255,255,0.9) 2px,
+            transparent 3px
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(255,255,255,0.8) 0px,
+            rgba(255,255,255,0.8) 2px,
+            transparent 3px
         );
 }
 
-/* 전체 화면에 떠다니는 고양이 */
-.bg-cat {
+
+/* ----------------------------------------------
+   고양이 전체 배경
+   화면 곳곳에 고양이 이모지가 반복됨
+   ---------------------------------------------- */
+
+.stApp::before {
+
+    content:
+        "🐱     🐈        🐈‍⬛        🐱     🐈"
+        "\\A"
+        "    🐈‍⬛       🐱       🐈       🐱"
+        "\\A"
+        "🐈       🐱       🐈‍⬛       🐱       🐈"
+        "\\A"
+        "   🐱       🐈       🐱       🐈‍⬛"
+        "\\A"
+        "🐈‍⬛       🐱       🐈       🐱       🐈"
+        "\\A"
+        "     🐈       🐱       🐈‍⬛       🐱"
+        "\\A"
+        "🐱       🐈‍⬛       🐱       🐈       🐱";
+
+    white-space: pre;
+
     position: fixed;
-    width: 85px;
-    height: 85px;
-    object-fit: cover;
-    border-radius: 50%;
-    opacity: 0.78;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
     z-index: 0;
+
     pointer-events: none;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+
+    font-size: 34px;
+    line-height: 1.9;
+
+    letter-spacing: 18px;
+
+    opacity: 0.13;
+
+    overflow: hidden;
+
+    transform: rotate(-5deg) scale(1.08);
 }
 
-/* 고양이 위치 */
-.bg-cat1 {
-    top: 8%;
-    left: 3%;
-    animation: floating1 7s ease-in-out infinite;
+
+/* ----------------------------------------------
+   화면 위에 은은한 색감
+   ---------------------------------------------- */
+
+.stApp::after {
+
+    content: "";
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 225, 241, 0.25),
+            rgba(230, 220, 255, 0.25),
+            rgba(215, 240, 255, 0.25)
+        );
 }
 
-.bg-cat2 {
-    top: 20%;
-    right: 4%;
-    animation: floating2 9s ease-in-out infinite;
-}
 
-.bg-cat3 {
-    bottom: 13%;
-    left: 5%;
-    animation: floating2 8s ease-in-out infinite;
-}
+/* ----------------------------------------------
+   실제 Streamlit 내용
+   ---------------------------------------------- */
 
-.bg-cat4 {
-    bottom: 8%;
-    right: 5%;
-    animation: floating1 10s ease-in-out infinite;
-}
-
-@keyframes floating1 {
-
-    0% {
-        transform: translateY(0px) rotate(-5deg);
-    }
-
-    50% {
-        transform: translateY(-25px) rotate(5deg);
-    }
-
-    100% {
-        transform: translateY(0px) rotate(-5deg);
-    }
-}
-
-@keyframes floating2 {
-
-    0% {
-        transform: translateY(0px) rotate(5deg);
-    }
-
-    50% {
-        transform: translateY(22px) rotate(-5deg);
-    }
-
-    100% {
-        transform: translateY(0px) rotate(5deg);
-    }
-}
-
-/* 메인 내용이 고양이보다 위에 오도록 */
 [data-testid="stAppViewContainer"] {
+
     position: relative;
+
     z-index: 1;
+
+    background: transparent !important;
 }
 
-/* 제목 */
+
+/* 헤더도 투명하게 */
+[data-testid="stHeader"] {
+
+    background: transparent !important;
+}
+
+
+/* ----------------------------------------------
+   제목
+   ---------------------------------------------- */
+
 .main-title {
+
     text-align: center;
+
     font-size: 44px;
+
     font-weight: 800;
+
     margin-top: 15px;
+
     margin-bottom: 5px;
+
+    color: #39333d;
 }
 
-/* 부제목 */
+
 .main-subtitle {
+
     text-align: center;
+
     font-size: 17px;
-    color: #666666;
+
+    color: #666;
+
     margin-bottom: 30px;
 }
 
-/* 추천 카드 */
-.cat-card {
-    background: rgba(255, 255, 255, 0.93);
-    border-radius: 22px;
-    padding: 20px;
-    margin: 15px 0;
-    box-shadow: 0 6px 25px rgba(100, 80, 120, 0.12);
-    border: 1px solid rgba(255,255,255,0.8);
+
+/* ----------------------------------------------
+   채팅 메시지
+   ---------------------------------------------- */
+
+[data-testid="stChatMessage"] {
+
+    background: rgba(255, 255, 255, 0.88);
+
+    border-radius: 20px;
+
+    padding: 10px 14px;
+
+    margin-bottom: 10px;
+
+    box-shadow:
+        0 4px 18px rgba(80, 60, 100, 0.08);
 }
 
+
+/* ----------------------------------------------
+   입력창
+   ---------------------------------------------- */
+
+[data-testid="stChatInput"] {
+
+    background: rgba(255,255,255,0.92);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 4px 20px rgba(80, 60, 100, 0.10);
+}
+
+
+/* ----------------------------------------------
+   사이드바
+   ---------------------------------------------- */
+
+section[data-testid="stSidebar"] {
+
+    background:
+        rgba(255, 248, 252, 0.92) !important;
+
+    border-right:
+        1px solid rgba(200,180,210,0.2);
+}
+
+
+/* ----------------------------------------------
+   추천 고양이 카드
+   ---------------------------------------------- */
+
+.cat-card {
+
+    background:
+        rgba(255, 255, 255, 0.94);
+
+    border-radius: 22px;
+
+    padding: 20px;
+
+    margin: 12px 0;
+
+    box-shadow:
+        0 6px 25px rgba(100,80,120,0.12);
+
+    border:
+        1px solid rgba(255,255,255,0.8);
+}
+
+
 .cat-card-title {
+
     font-size: 25px;
+
     font-weight: 800;
+
     margin-bottom: 8px;
 }
 
+
 .cat-card-text {
-    color: #555555;
+
+    color: #555;
+
     line-height: 1.7;
 }
 
+
 .cat-keyword {
-    background: #f3edff;
+
+    background: #f1eaff;
+
     padding: 8px 12px;
+
     border-radius: 12px;
+
     display: inline-block;
-    margin-top: 8px;
+
+    margin-top: 10px;
+
     font-size: 14px;
 }
 
-/* 채팅창 */
-[data-testid="stChatMessage"] {
-    border-radius: 18px;
-}
-
-/* 사이드바 */
-section[data-testid="stSidebar"] {
-    background: rgba(255,255,255,0.88);
-}
-
 </style>
-""", unsafe_allow_html=True)
-
-
-# ==================================================
-# 배경 고양이
-# ==================================================
-
-st.markdown(f"""
-<img class="bg-cat bg-cat1" src="{CAT_IMAGES['랙돌']}">
-<img class="bg-cat bg-cat2" src="{CAT_IMAGES['메인쿤']}">
-<img class="bg-cat bg-cat3" src="{CAT_IMAGES['브리티시 숏헤어']}">
-<img class="bg-cat bg-cat4" src="{CAT_IMAGES['러시안 블루']}">
 """, unsafe_allow_html=True)
 
 
@@ -246,15 +353,15 @@ st.markdown(
 
 st.markdown(
     '<div class="main-subtitle">'
-    '내 성격과 원하는 고양이 스타일을 알려주면 '
-    '찰떡같이 어울리는 고양이를 찾아줄게냥'
+    '나의 성격과 원하는 고양이 스타일을 알려주면 '
+    '나에게 어울리는 고양이를 찾아줄게냥'
     '</div>',
     unsafe_allow_html=True
 )
 
 
 # ==================================================
-# Gemini API
+# Gemini API 연결
 # ==================================================
 
 try:
@@ -276,16 +383,16 @@ except Exception:
 SYSTEM_PROMPT = """
 너는 '냥냥 고양이 추천소'의 고양이 추천 AI야.
 
-사용자의 성격과 생활방식, 원하는 고양이의 외모와 성격을 파악해서
-잘 어울릴 수 있는 고양이 품종을 추천해주는 역할을 해.
+사용자의 성격, 생활 방식, 원하는 외모와 원하는 고양이의 성격을
+종합해서 어울리는 고양이 품종을 추천해주는 역할이야.
 
 사용자가 알려줄 수 있는 정보:
 
 - 자신의 성격
-- 조용한지 활발한지
+- 활동적인지 조용한지
 - 혼자 있는 것을 좋아하는지
-- 사람과 많이 교감하고 싶은지
-- 집에 있는 시간이 많은지
+- 사람과 교감하는 것을 좋아하는지
+- 집에 있는 시간이 얼마나 되는지
 - 고양이와 놀아줄 수 있는 시간
 - 원하는 털 길이
 - 원하는 외모
@@ -294,31 +401,29 @@ SYSTEM_PROMPT = """
 - 독립적인 고양이를 원하는지
 - 활동적인 고양이를 원하는지
 - 조용한 고양이를 원하는지
-- 털 빠짐에 대한 선호
+- 털 관리에 대한 선호
 
 [추천 원칙]
 
 1. 사용자의 성격과 원하는 고양이 스타일을 함께 고려해.
 
-2. 정보가 부족하면 질문을 해.
-   한 번에 너무 많은 질문을 하지 말고 자연스럽게 대화를 이어가.
+2. 정보가 부족하면 자연스럽게 질문해.
 
-3. 고양이 품종마다 일반적으로 알려진 특징을 설명하되,
-   같은 품종이라도 개체마다 성격이 다를 수 있다는 점을 알려줘.
+3. 한 번에 너무 많은 질문을 하지 마.
 
-4. 외모만 보고 추천하지 마.
+4. 품종마다 일반적으로 알려진 특징을 설명하되,
+   같은 품종이라도 개체마다 성격이 다를 수 있다고 알려줘.
 
-5. 사용자의 생활환경과 고양이의 활동량이나 관리 필요성을 함께 고려해.
+5. 외모만 보고 추천하지 마.
 
-6. 필요하다면 2~3개의 품종을 추천해.
+6. 사용자의 생활환경과 고양이의 활동량 및 관리 필요성을
+   함께 고려해.
 
-7. 각 품종을 추천하는 이유를 사용자의 성격과 연결해서 설명해.
+7. 필요하면 2~3개의 품종을 추천해.
 
-8. 추천 결과에는 반드시 품종의 정확한 한국어 이름을 사용해.
+8. 각각 왜 잘 어울리는지 사용자의 성격과 연결해서 설명해.
 
-[추천 결과 형식]
-
-추천할 정보가 충분해지면 다음처럼 정리해줘.
+9. 정보가 충분해졌다면 추천 결과를 다음 형식으로 설명해.
 
 🐱 가장 잘 어울리는 고양이
 품종: ○○
@@ -338,53 +443,100 @@ SYSTEM_PROMPT = """
 - ○○
 - ○○
 
-단, 사용자의 정보가 충분하지 않다면 억지로 추천하지 말고
-먼저 자연스럽게 질문해.
-
 [말투]
 
 - 친근하고 귀엽게 말해.
 - 중고등학생도 쉽게 이해할 수 있게 설명해.
 - 한국어로만 답해.
-- 답변 마지막에는 반드시 '냥'을 붙여.
+- 답변의 마지막에는 반드시 '냥'을 붙여.
 - 답변 중간에는 '냥'을 붙이지 마.
 - 이미 마지막이 '냥'이면 중복해서 붙이지 마.
 """
 
 
 # ==================================================
-# 세션에 대화 저장
+# 대화 기록
 # ==================================================
 
 if "messages" not in st.session_state:
+
     st.session_state.messages = []
 
 
 # ==================================================
-# 추천 결과를 화면에 보여주는 함수
+# 사이드바
+# ==================================================
+
+with st.sidebar:
+
+    st.markdown("## 🐾 냥냥 고양이 추천소")
+
+    if st.button(
+        "🗑️ 대화 초기화",
+        use_container_width=True
+    ):
+
+        st.session_state.messages = []
+
+        st.rerun()
+
+    st.markdown("---")
+
+    st.markdown("### 💡 이렇게 말해봐!")
+
+    st.markdown("""
+    **내 성격**
+
+    나는 조용한 편이고 집에 있는 시간이 많아.
+
+    **원하는 고양이**
+
+    복슬복슬하고 애교 많은 고양이가 좋아.
+
+    **또는**
+
+    나는 활발한 성격이고
+    고양이랑 많이 놀아주고 싶어.
+    큰 고양이가 좋아!
+    """)
+
+
+# ==================================================
+# 이전 대화 표시
+# ==================================================
+
+for message in st.session_state.messages:
+
+    with st.chat_message(message["role"]):
+
+        st.markdown(message["content"])
+
+
+# ==================================================
+# 고양이 추천 카드
 # ==================================================
 
 def show_cat_cards(text):
 
-    # AI 답변에서 어떤 품종이 언급됐는지 찾기
     found_cats = []
 
     for breed in CAT_IMAGES.keys():
 
         if breed in text:
+
             if breed not in found_cats:
+
                 found_cats.append(breed)
 
-    # 최대 3개까지만 사진 표시
     found_cats = found_cats[:3]
 
     if not found_cats:
         return
 
     st.markdown("---")
+
     st.markdown("## 🐾 너에게 어울리는 고양이")
 
-    # 추천 품종 수에 따라 컬럼 생성
     columns = st.columns(len(found_cats))
 
     for column, breed in zip(columns, found_cats):
@@ -421,53 +573,6 @@ def show_cat_cards(text):
 
 
 # ==================================================
-# 사이드바
-# ==================================================
-
-with st.sidebar:
-
-    st.markdown("## 🐾 냥냥 고양이 추천소")
-
-    if st.button(
-        "🗑️ 대화 초기화",
-        use_container_width=True
-    ):
-
-        st.session_state.messages = []
-        st.rerun()
-
-    st.markdown("---")
-
-    st.markdown("### 💡 이렇게 말해봐!")
-
-    st.markdown("""
-    **내 성격**
-
-    나는 조용한 편이고 혼자 있는 것도 좋아해.
-
-    **원하는 고양이**
-
-    털이 복슬복슬하고 애교가 많았으면 좋겠어.
-
-    **또는**
-
-    나는 활동적인 성격이고
-    고양이랑 많이 놀아주고 싶어.
-    큰 고양이가 좋아!
-    """)
-
-
-# ==================================================
-# 기존 대화 표시
-# ==================================================
-
-for message in st.session_state.messages:
-
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
-
-# ==================================================
 # 사용자 입력
 # ==================================================
 
@@ -478,32 +583,35 @@ user_input = st.chat_input(
 
 if user_input:
 
-    # --------------------------------------------------
     # 사용자 메시지 저장
-    # --------------------------------------------------
-
-    st.session_state.messages.append({
-        "role": "user",
-        "content": user_input
-    })
+    st.session_state.messages.append(
+        {
+            "role": "user",
+            "content": user_input
+        }
+    )
 
     with st.chat_message("user"):
+
         st.markdown(user_input)
 
 
-    # --------------------------------------------------
+    # ==================================================
     # AI 답변
-    # --------------------------------------------------
+    # ==================================================
 
     with st.chat_message("assistant"):
 
         answer_placeholder = st.empty()
+
         full_answer = ""
 
         try:
 
             if client is None:
+
                 raise Exception("API 연결 실패")
+
 
             # 시스템 프롬프트
             api_messages = [
@@ -513,19 +621,24 @@ if user_input:
                 }
             ]
 
-            # 이전 대화도 함께 전달
+            # 이전 대화 추가
             api_messages.extend(
                 st.session_state.messages
             )
 
+
             # Gemini 호출
             response = client.chat.completions.create(
+
                 model="gemini-3.5-flash-lite",
+
                 messages=api_messages,
+
                 stream=True
             )
 
-            # AI 답변을 실시간으로 출력
+
+            # 실시간 스트리밍
             for chunk in response:
 
                 if chunk.choices:
@@ -540,28 +653,34 @@ if user_input:
                             full_answer + "▌"
                         )
 
-            # 마지막에 냥 붙이기
+
+            # 마지막에 냥 추가
             full_answer = full_answer.rstrip()
 
-            if full_answer and not full_answer.endswith("냥"):
+            if (
+                full_answer
+                and not full_answer.endswith("냥")
+            ):
+
                 full_answer += "냥"
+
 
             # 최종 답변
             answer_placeholder.markdown(
                 full_answer
             )
 
-            # 대화 저장
-            st.session_state.messages.append({
-                "role": "assistant",
-                "content": full_answer
-            })
+
+            # 대화 기록
+            st.session_state.messages.append(
+                {
+                    "role": "assistant",
+                    "content": full_answer
+                }
+            )
 
 
-            # --------------------------------------------------
-            # 고양이 추천 사진 표시
-            # --------------------------------------------------
-
+            # 추천 고양이 사진
             show_cat_cards(full_answer)
 
 
@@ -576,7 +695,9 @@ if user_input:
                 error_message
             )
 
-            st.session_state.messages.append({
-                "role": "assistant",
-                "content": error_message
-            })
+            st.session_state.messages.append(
+                {
+                    "role": "assistant",
+                    "content": error_message
+                }
+            )
